@@ -1,9 +1,11 @@
 package com.example.dumbwordle
 
 import android.app.Activity
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         var turn = 0
         var userGuess: TextView
+        var gameStatus: Boolean
 
         val ansWord = FourLetterWordList.getAFourLetterWord()
         Log.i("Daniel", ansWord)
@@ -24,15 +27,10 @@ class MainActivity : AppCompatActivity() {
         var textView: TextView = findViewById(R.id.theWordTextView) as TextView
         textView.text = ansWord
 
-        Log.v("Daniel", "You made 3rd guess!")
-
         val guessButton = findViewById<Button>(R.id.guessButton)
         guessButton.setOnClickListener {
-            //Log.v("Daniel", "Button Clicked")
-            Toast.makeText(this, "You Made A Guess!", Toast.LENGTH_LONG).show()
 
             if (turn == 0){
-                Log.v("Daniel", "You made 1st guess!")
 
                 var guess1: String
                 userGuess = findViewById(R.id.userGuess) as TextView
@@ -42,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
                 var guessAttempt1: TextView = findViewById(R.id.guessAttempt1)
                 guessAttempt1.text = guess1
+                guessAttempt1.visibility = View.VISIBLE
 
                 // To close keyboard.
                 val view = currentFocus
@@ -58,11 +57,28 @@ class MainActivity : AppCompatActivity() {
                 // To clear EditText
                 userGuess.setText("")
 
+                var checkRes1: String
+                guess1 = guess1.uppercase()
+                checkRes1 = checkGuess(guess1, ansWord)
+
+                var checkBox1: TextView = findViewById(R.id.guessAttempt1Check) as TextView
+                checkBox1.text = checkRes1
+                checkBox1.visibility = View.VISIBLE
+
+
+                if ("OOOO" == checkRes1){
+                    Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
+                    turn = 4
+                    var theWordTextView: TextView = findViewById(R.id.theWordTextView)
+                    theWordTextView.setTextColor(Color.GREEN)
+                    theWordTextView.visibility = View.VISIBLE
+                }
+
                 turn += 1
             }
 
             else if (turn == 1){
-                Log.v("Daniel", "You made 2nd guess!")
+                //Log.v("Daniel", "You made 2nd guess!")
 
                 var guess2: String
                 userGuess = findViewById(R.id.userGuess) as TextView
@@ -72,6 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                 var guessAttempt2: TextView = findViewById(R.id.guessAttempt2)
                 guessAttempt2.text = guess2
+                guessAttempt2.visibility = View.VISIBLE
 
                 // To close keyboard.
                 val view = currentFocus
@@ -88,11 +105,27 @@ class MainActivity : AppCompatActivity() {
                 // To clear EditText
                 userGuess.setText("")
 
+                var checkRes2: String
+                guess2 = guess2.uppercase()
+                checkRes2 = checkGuess(guess2, ansWord)
+
+                var checkBox2: TextView = findViewById(R.id.guessAttempt2Check) as TextView
+                checkBox2.text = checkRes2
+                checkBox2.visibility = View.VISIBLE
+
+
+                if ("OOOO" == checkRes2){
+                    Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
+                    turn = 4
+                    var theWordTextView: TextView = findViewById(R.id.theWordTextView)
+                    theWordTextView.setTextColor(Color.GREEN)
+                    theWordTextView.visibility = View.VISIBLE
+                }
+
                 turn += 1
             }
 
             else if (turn == 2){
-                Log.v("Daniel", "You made 3rd guess!")
 
                 var guess3: String
                 userGuess = findViewById(R.id.userGuess) as TextView
@@ -102,6 +135,7 @@ class MainActivity : AppCompatActivity() {
 
                 var guessAttempt3: TextView = findViewById(R.id.guessAttempt3)
                 guessAttempt3.text = guess3
+                guessAttempt3.visibility = View.VISIBLE
 
                 // To close keyboard.
                 val view = currentFocus
@@ -118,11 +152,35 @@ class MainActivity : AppCompatActivity() {
                 // To clear EditText
                 userGuess.setText("")
 
+                var checkRes3: String
+                guess3 = guess3.uppercase()
+                checkRes3 = checkGuess(guess3, ansWord)
+
+                var checkBox3: TextView = findViewById(R.id.guessAttempt3Check) as TextView
+                checkBox3.text = checkRes3
+                checkBox3.visibility = View.VISIBLE
+
+                if ("OOOO" == checkRes3){
+                    Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
+                    turn = 4
+                    var theWordTextView: TextView = findViewById(R.id.theWordTextView)
+                    theWordTextView.setTextColor(Color.GREEN)
+                    theWordTextView.visibility = View.VISIBLE
+                }
+
                 turn += 1
+                if (turn == 3){
+                    Toast.makeText(this, "You lost! You did not guess the word.", Toast.LENGTH_LONG).show()
+                    turn += 1
+                    var theWordTextView: TextView = findViewById(R.id.theWordTextView)
+                    theWordTextView.setTextColor(Color.RED)
+                    theWordTextView.visibility = View.VISIBLE
+                }
             }
 
+
             else {
-                Log.v("Daniel", "No more turns can be made!")
+                Toast.makeText(this, "Game is over. No More turns can be made.", Toast.LENGTH_LONG).show()
 
                 // To close keyboard.
                 val view = currentFocus
@@ -163,3 +221,30 @@ object FourLetterWordList {
     }
 }
 
+
+
+/**
+ * Parameters / Fields:
+ *   wordToGuess : String - the target word the user is trying to guess
+ *   guess : String - what the user entered as their guess
+ *
+ * Returns a String of 'O', '+', and 'X', where:
+ *   'O' represents the right letter in the right place
+ *   '+' represents the right letter in the wrong place
+ *   'X' represents a letter not in the target word
+ */
+private fun checkGuess(guess: String, wordToGuess: String) : String {
+    var result = ""
+    for (i in 0..3) {
+        if (guess[i] == wordToGuess[i]) {
+            result += "O"
+        }
+        else if (guess[i] in wordToGuess) {
+            result += "+"
+        }
+        else {
+            result += "X"
+        }
+    }
+    return result
+}
