@@ -86,8 +86,8 @@
 
     <EditText
         android:id="@+id/userGuess"
-        android:layout_width="227dp"
-        android:layout_height="49dp"
+        android:layout_width="167dp"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:hint="Enter 4-letter Guess"
@@ -102,7 +102,7 @@
         android:id="@+id/guessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="5dp"
         android:layout_marginBottom="16dp"
         android:text="Guess"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -181,5 +181,15 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guessAttempt3" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="16dp"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guessButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

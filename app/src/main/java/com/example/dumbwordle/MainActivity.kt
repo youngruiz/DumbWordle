@@ -18,14 +18,48 @@ class MainActivity : AppCompatActivity() {
 
         var turn = 0
         var userGuess: TextView
-        var gameStatus: Boolean
 
-        val ansWord = FourLetterWordList.getAFourLetterWord()
+        var ansWord = FourLetterWordList.getAFourLetterWord()
         Log.i("Daniel", ansWord)
 
         // Change the answer TextView to generated Wordle answer, but will initially be hidden.
         var textView: TextView = findViewById(R.id.theWordTextView) as TextView
         textView.text = ansWord
+
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.setOnClickListener {
+
+            // Reset turns and get new four letter word.
+            turn = 0
+            ansWord = FourLetterWordList.getAFourLetterWord()
+            ansWord = ansWord.uppercase()
+            Log.i("Daniel", ansWord)
+
+            // Reset text boxes to empty and make them invisible
+            var g1: TextView = findViewById(R.id.guessAttempt1)
+            g1.setText("")
+            g1.visibility = View.INVISIBLE
+            var g1c: TextView = findViewById(R.id.guessAttempt1Check)
+            g1c.setText("")
+            g1c.visibility = View.INVISIBLE
+            var g2: TextView = findViewById(R.id.guessAttempt2)
+            g2.setText("")
+            g2.visibility = View.INVISIBLE
+            var g2c: TextView = findViewById(R.id.guessAttempt2Check)
+            g2c.setText("")
+            g2c.visibility = View.INVISIBLE
+            var g3: TextView = findViewById(R.id.guessAttempt3)
+            g3.setText("")
+            g3.visibility = View.INVISIBLE
+            var g3c: TextView = findViewById(R.id.guessAttempt3Check)
+            g3c.setText("")
+            g3c.visibility = View.INVISIBLE
+
+            var ans: TextView = findViewById(R.id.theWordTextView)
+            ans.visibility = View.INVISIBLE
+            ans.setText(ansWord)
+
+        }
 
         val guessButton = findViewById<Button>(R.id.guessButton)
         guessButton.setOnClickListener {
@@ -36,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 userGuess = findViewById(R.id.userGuess) as TextView
                 guess1 = userGuess.text.toString()
 
-                Log.v("Daniel", guess1)
+
 
                 var guessAttempt1: TextView = findViewById(R.id.guessAttempt1)
                 guessAttempt1.text = guess1
@@ -59,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
                 var checkRes1: String
                 guess1 = guess1.uppercase()
+                Log.v("Daniel", guess1)
                 checkRes1 = checkGuess(guess1, ansWord)
 
                 var checkBox1: TextView = findViewById(R.id.guessAttempt1Check) as TextView
@@ -222,7 +257,6 @@ object FourLetterWordList {
 }
 
 
-
 /**
  * Parameters / Fields:
  *   wordToGuess : String - the target word the user is trying to guess
@@ -235,6 +269,10 @@ object FourLetterWordList {
  */
 private fun checkGuess(guess: String, wordToGuess: String) : String {
     var result = ""
+    Log.v("Daniel", "BEGIN")
+    Log.v("Daniel", guess)
+    Log.v("Daniel", wordToGuess)
+    Log.v("Daniel", "END")
     for (i in 0..3) {
         if (guess[i] == wordToGuess[i]) {
             result += "O"
@@ -248,3 +286,4 @@ private fun checkGuess(guess: String, wordToGuess: String) : String {
     }
     return result
 }
+
