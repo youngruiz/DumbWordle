@@ -1,21 +1,146 @@
 package com.example.dumbwordle
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var turn = 0
+        var userGuess: TextView
+
         val ansWord = FourLetterWordList.getAFourLetterWord()
         Log.i("Daniel", ansWord)
 
         // Change the answer TextView to generated Wordle answer, but will initially be hidden.
-        val textView: TextView = findViewById(R.id.theWordTextView) as TextView
+        var textView: TextView = findViewById(R.id.theWordTextView) as TextView
         textView.text = ansWord
+
+        Log.v("Daniel", "You made 3rd guess!")
+
+        val guessButton = findViewById<Button>(R.id.guessButton)
+        guessButton.setOnClickListener {
+            //Log.v("Daniel", "Button Clicked")
+            Toast.makeText(this, "You Made A Guess!", Toast.LENGTH_LONG).show()
+
+            if (turn == 0){
+                Log.v("Daniel", "You made 1st guess!")
+
+                var guess1: String
+                userGuess = findViewById(R.id.userGuess) as TextView
+                guess1 = userGuess.text.toString()
+
+                Log.v("Daniel", guess1)
+
+                var guessAttempt1: TextView = findViewById(R.id.guessAttempt1)
+                guessAttempt1.text = guess1
+
+                // To close keyboard.
+                val view = currentFocus
+                if (view != null) {
+                    view.clearFocus()
+                    val inputMethodManager =
+                        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(
+                        view.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+                }
+
+                // To clear EditText
+                userGuess.setText("")
+
+                turn += 1
+            }
+
+            else if (turn == 1){
+                Log.v("Daniel", "You made 2nd guess!")
+
+                var guess2: String
+                userGuess = findViewById(R.id.userGuess) as TextView
+                guess2 = userGuess.text.toString()
+
+                Log.v("Daniel", guess2)
+
+                var guessAttempt2: TextView = findViewById(R.id.guessAttempt2)
+                guessAttempt2.text = guess2
+
+                // To close keyboard.
+                val view = currentFocus
+                if (view != null) {
+                    view.clearFocus()
+                    val inputMethodManager =
+                        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(
+                        view.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+                }
+
+                // To clear EditText
+                userGuess.setText("")
+
+                turn += 1
+            }
+
+            else if (turn == 2){
+                Log.v("Daniel", "You made 3rd guess!")
+
+                var guess3: String
+                userGuess = findViewById(R.id.userGuess) as TextView
+                guess3 = userGuess.text.toString()
+
+                Log.v("Daniel", guess3)
+
+                var guessAttempt3: TextView = findViewById(R.id.guessAttempt3)
+                guessAttempt3.text = guess3
+
+                // To close keyboard.
+                val view = currentFocus
+                if (view != null) {
+                    view.clearFocus()
+                    val inputMethodManager =
+                        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(
+                        view.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+                }
+
+                // To clear EditText
+                userGuess.setText("")
+
+                turn += 1
+            }
+
+            else {
+                Log.v("Daniel", "No more turns can be made!")
+
+                // To close keyboard.
+                val view = currentFocus
+                if (view != null) {
+                    view.clearFocus()
+                    val inputMethodManager =
+                        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(
+                        view.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+                }
+
+                // To clear EditText
+                userGuess = findViewById(R.id.userGuess) as TextView
+                userGuess.setText("")
+            }
+        }
 
     }
 }
@@ -37,3 +162,4 @@ object FourLetterWordList {
         return allWords[randomNumber].uppercase()
     }
 }
+
