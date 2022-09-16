@@ -11,12 +11,15 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 
+
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         var turn = 0
+        var winStreak = 0
         var userGuess: TextView
 
         var ansWord = FourLetterWordList.getAFourLetterWord()
@@ -25,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         // Change the answer TextView to generated Wordle answer, but will initially be hidden.
         var textView: TextView = findViewById(R.id.theWordTextView) as TextView
         textView.text = ansWord
+
+        var streakCountTextView: TextView = findViewById(R.id.streakNum) as TextView
+        streakCountTextView.text = winStreak.toString()
 
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.setOnClickListener {
@@ -70,8 +76,6 @@ class MainActivity : AppCompatActivity() {
                 userGuess = findViewById(R.id.userGuess) as TextView
                 guess1 = userGuess.text.toString()
 
-
-
                 var guessAttempt1: TextView = findViewById(R.id.guessAttempt1)
                 guessAttempt1.text = guess1
                 guessAttempt1.visibility = View.VISIBLE
@@ -104,9 +108,11 @@ class MainActivity : AppCompatActivity() {
                 if ("OOOO" == checkRes1){
                     Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
                     turn = 4
+                    winStreak += 1
                     var theWordTextView: TextView = findViewById(R.id.theWordTextView)
                     theWordTextView.setTextColor(Color.GREEN)
                     theWordTextView.visibility = View.VISIBLE
+                    streakCountTextView.text = winStreak.toString()
                 }
 
                 turn += 1
@@ -118,8 +124,6 @@ class MainActivity : AppCompatActivity() {
                 var guess2: String
                 userGuess = findViewById(R.id.userGuess) as TextView
                 guess2 = userGuess.text.toString()
-
-                Log.v("Daniel", guess2)
 
                 var guessAttempt2: TextView = findViewById(R.id.guessAttempt2)
                 guessAttempt2.text = guess2
@@ -152,9 +156,11 @@ class MainActivity : AppCompatActivity() {
                 if ("OOOO" == checkRes2){
                     Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
                     turn = 4
+                    winStreak += 1
                     var theWordTextView: TextView = findViewById(R.id.theWordTextView)
                     theWordTextView.setTextColor(Color.GREEN)
                     theWordTextView.visibility = View.VISIBLE
+                    streakCountTextView.text = winStreak.toString()
                 }
 
                 turn += 1
@@ -198,18 +204,22 @@ class MainActivity : AppCompatActivity() {
                 if ("OOOO" == checkRes3){
                     Toast.makeText(this, "You Win! You Guessed the Word!", Toast.LENGTH_LONG).show()
                     turn = 4
+                    winStreak += 1
                     var theWordTextView: TextView = findViewById(R.id.theWordTextView)
                     theWordTextView.setTextColor(Color.GREEN)
                     theWordTextView.visibility = View.VISIBLE
+                    streakCountTextView.text = winStreak.toString()
                 }
 
                 turn += 1
                 if (turn == 3){
                     Toast.makeText(this, "You lost! You did not guess the word.", Toast.LENGTH_LONG).show()
                     turn += 1
+                    winStreak = 0
                     var theWordTextView: TextView = findViewById(R.id.theWordTextView)
                     theWordTextView.setTextColor(Color.RED)
                     theWordTextView.visibility = View.VISIBLE
+                    streakCountTextView.text = 0.toString()
                 }
             }
 
@@ -268,6 +278,7 @@ object FourLetterWordList {
  *   'X' represents a letter not in the target word
  */
 private fun checkGuess(guess: String, wordToGuess: String) : String {
+
     var result = ""
     Log.v("Daniel", "BEGIN")
     Log.v("Daniel", guess)
